@@ -1,4 +1,5 @@
 import maya.cmds as cmds
+import os
 
 class ErrorUI():
     def __init__(self, errorText = "Error", windowName = "Error"):
@@ -20,6 +21,38 @@ class ErrorUI():
 
     def closeWindow(self, *args):
         cmds.deleteUI(self.windowName)
+
+
+def applyRig():
+    #Finds skeletal mesh in scene
+    meshInScene = cmds.ls(type="mesh")
+    for obj in meshInScene:
+        if(obj.startswith("SK_")==True):
+            skMesh = cmds.listRelatives(obj,type='transform',p=True)
+
+    dirname = os.path.dirname(__file__)
+    print(dirname)
+    filename = dirname + r'\rigs\rigHelper_defaultRig_v01.mb'
+    print(filename)
+
+    cmds.file(filename, reference = True, dns = True)
+
+    intPrefix = "intermediate_"
+    intermediateRoot = "intermediate_root_JNT"
+    intermediateRootDescendants = cmds.listRelatives(intermediateRoot, allDescendents = True)
+    intermediateJoints = [intermediateRoot]
+    for child in intermediateRootDescendants:
+        if cmds.objectType(child, isType = "joint"):
+            intermediateJoints.append(child)
+    print(intermediateJoints)
+    for intjnt in intermediateJoints:
+        jnt = intjnt[len(intPrefix):]
+        cmds.parentConstraint(intjnt, jnt, mo=True, weight = 1)
+
+    cmds.parent(skMesh, "models_GRP")
+    cmds.parent("root_JNT", "joints_GRP")
+
+    cmds.select(cl=True)
 
 
 def redefineSkeleton():

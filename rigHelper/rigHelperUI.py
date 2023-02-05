@@ -12,16 +12,13 @@ class RigHelperUI():
 
         cmds.window(windowName,w=200, h=300)
         cmds.columnLayout()
-        cmds.button(l="Redefine Skeleton", w=200, ann = "Redefines the currently loaded character skeleton", c=self.redefineSkeletonPressed)
-        cmds.button(l="Test", w=200, ann = "Test", c=self.myFunction)
+        cmds.button(l="Apply Default Rig", w=200, ann = "Applies the default character rig to the currently loaded model", c=self.applyRigPressed)
         
         cmds.showWindow(windowName)
 
-    def redefineSkeletonPressed(self, *args):
+    def applyRigPressed(self, *args):
         rhLib.redefineSkeleton()
-
-    def myFunction(self, *args):
-        print("Test")
+        rhLib.applyRig()
         
 
 rhelperUI = RigHelperUI()
