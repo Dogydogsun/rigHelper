@@ -2,7 +2,10 @@ import importlib
 import fnmatch
 import os
 
-packagePath = "D:/Projects/Repositories/rigHelper"
+dirname = os.path.dirname(__file__)
+
+packagePathRaw = os.path.dirname(dirname)
+packagePath = packagePathRaw.replace("\\", "/")
 
 #Reload scripts by recursively looking through package path. Code courtesy of Greg Hendrix, found at: https://www.tdhendrix.com/blog/reload-python-files-in-maya
 
