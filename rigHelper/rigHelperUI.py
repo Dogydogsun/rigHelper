@@ -1,7 +1,6 @@
 import maya.cmds as cmds
+import rigHelper.rigHelperLib as rhLib
 
-def myFunction(*args):
-    print("Button was pressed")
 
 class RigHelperUI():
     #Constructs UI
@@ -13,9 +12,16 @@ class RigHelperUI():
 
         cmds.window(windowName,w=200, h=300)
         cmds.columnLayout()
-        cmds.button(l="test", c="myFunction()")
+        cmds.button(l="Redefine Skeleton", w=200, ann = "Redefines the currently loaded character skeleton", c=self.redefineSkeletonPressed)
+        cmds.button(l="Test", w=200, ann = "Test", c=self.myFunction)
         
         cmds.showWindow(windowName)
+
+    def redefineSkeletonPressed(self, *args):
+        rhLib.redefineSkeleton()
+
+    def myFunction(self, *args):
+        print("Test")
         
 
 rhelperUI = RigHelperUI()

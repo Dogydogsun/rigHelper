@@ -1,10 +1,31 @@
 import maya.cmds as cmds
 
+class ErrorUI():
+    def __init__(self, errorText = "Error", windowName = "Error"):
+        self.errorText = errorText
+        self.windowName = windowName
+        self.errorUI()
+
+    #Constructs UI
+    def errorUI(self, *args):
+        #Checks if UI window exists
+        if cmds.window(self.windowName, exists=True):
+            cmds.deleteUI(self.windowName)
+
+        cmds.window(self.windowName,w=200, h=200)
+        cmds.columnLayout()
+        cmds.text(l=self.errorText, w=400, h=40, al="left", ww=True)
+        cmds.button(l="Close", w=100, c=self.closeWindow)
+        cmds.showWindow(self.windowName)
+
+    def closeWindow(self, *args):
+        cmds.deleteUI(self.windowName)
+
+
 def redefineSkeleton():
     cmds.select(cl=True)
     obj = ""
     skMesh = []
-    pelvisJoint = "|Root|Center|Pelvis"
 
     cmds.currentTime(0)
 
@@ -34,7 +55,11 @@ def redefineSkeleton():
 
 
     def cleanAnim():
-        allJoints = cmds.listRelatives("Root", ad = True)
+        try:
+            allJoints = cmds.listRelatives("Root", ad = True)
+        except:
+            ErrorUI(errorText = "No group named 'Root' was found, please make sure this skeleton hasn't already been redefined.")
+            cmds.error("No group named 'Root' was found, please make sure this skeleton hasn't already been redefined.")
         for jnt in allJoints:
             deleteKeyframes(jnt)
 
@@ -65,8 +90,9 @@ def redefineSkeleton():
 
     def createSKMeshWeights():
         try:
-            skMeshWeights = cmds.duplicate(skMesh,rr = True, un = True, name = "skMeshWeights")
+            skMeshWeights = cmds.duplicate(skMesh, rr = True, un = True, name = "skMeshWeights")
         except:
+            ErrorUI(errorText = "No character skeletal mesh found. Please check that the character mesh starts with the prefix SK_")
             cmds.error("No character skeletal mesh found. Please check that the character mesh starts with the prefix SK_")
 
 
