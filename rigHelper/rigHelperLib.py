@@ -22,8 +22,14 @@ class ErrorUI():
     def closeWindow(self, *args):
         cmds.deleteUI(self.windowName)
 
+def prepareExport():
+    allModels = cmds.listRelatives("models_GRP", ad=True)
+    allJoints = cmds.listRelatives("joints_GRP", ad=True)
+    cmds.select(allModels,allJoints)
 
-def applyRig():
+
+def applyRig(rigPath):
+    rigString = rigPath
     #Finds skeletal mesh in scene
     meshInScene = cmds.ls(type="mesh")
     for obj in meshInScene:
@@ -31,9 +37,7 @@ def applyRig():
             skMesh = cmds.listRelatives(obj,type='transform',p=True)
 
     dirname = os.path.dirname(__file__)
-    print(dirname)
-    filename = dirname + r'\rigs\rigHelper_defaultRig_v01.mb'
-    print(filename)
+    filename = dirname + rigString
 
     cmds.file(filename, reference = True, dns = True)
 
