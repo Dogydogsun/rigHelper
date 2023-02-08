@@ -39,7 +39,7 @@ def applyRig(rigPath):
     dirname = os.path.dirname(__file__)
     filename = dirname + rigString
 
-    cmds.file(filename, reference = True, dns = True)
+    cmds.file(filename, reference = True, dns = True, ignoreVersion = True)
 
     intPrefix = "intermediate_"
     intermediateRoot = "intermediate_root_JNT"
