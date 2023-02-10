@@ -20,11 +20,11 @@ class RigHelperUI():
 
     def applyRigPressed(self, *args):
         rhLib.redefineSkeleton()
-        rhLib.applyRig(rigPath = r'\rigs\rigHelper_dwarf_defaultRig.mb')
+        rhLib.applyRig(rigPath = r'\rigs\rigHelper_dwarf_defaultRig.ma')
 
     def applyHumanRigPressed(self, *args):
         rhLib.redefineSkeleton()
-        rhLib.applyRig(rigPath = r'\rigs\rigHelper_human_defaultRig.mb')
+        rhLib.applyRig(rigPath = r'\rigs\rigHelper_human_defaultRig.ma')
 
     def prepareExportPressed(self, *args):
         rhLib.prepareExport()
